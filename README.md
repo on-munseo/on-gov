@@ -102,6 +102,8 @@ claude plugin install on-gov --marketplace on-munseo/on-gov
 어느 앱이든 등록한 그 대화에는 도구가 아직 붙지 않습니다. 앱을 한 번 다시 켜거나(Claude Code 터미널은 `/exit` 뒤 `claude`, VS Code 는 새 대화) 새 대화를 열면 그다음부터 씁니다. 열쇠가 없으면 로그인 단계는 건너뛰고 손님으로 씁니다.
 
 > 문서 도구 전부와 법령 원문(On 근거)을 함께 쓰려면 이 묶음 대신 `https://onmunseo.kr/mcp` 하나를 붙이세요(권장 — [On 문서](https://github.com/on-munseo/on-munseo.github.io)). 둘 다 붙이면 같은 도구가 두 번 보입니다.
+>
+> 공문서 쓰기에 글 다듬기·법령 원문까지 한 주소로 붙이려면 `https://onmunseo.kr/mcp/write`(서버 이름 `on-write`) — 받은 문서에서 글을 꺼내거나 점검·가리는 도구 없이 쓰기·다듬기·법령만 모은 주소(2026-11-27).
 
 ### Claude Code — 더 보기
 
