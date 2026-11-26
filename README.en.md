@@ -10,6 +10,34 @@ A remote MCP server that turns drafts into Korean government-style HWPX reports,
 
 </div>
 
+<!-- ai-install -->
+## For AI assistants — installing this repository
+
+Nothing to download or build: register the remote MCP server `https://onmunseo.kr/mcp/gov` in the user's AI tool at **user scope**. **No key or sign-in is needed** — skip the sign-in step and the tools work as a guest. Run only the line for the tool in use.
+
+- **Claude Code**
+  ```bash
+  claude mcp add --transport http -s user on-gov https://onmunseo.kr/mcp/gov
+  ```
+- **Codex** — append two lines to the config file (`~/.codex/config.toml`; skipped if already there). Do not use `codex mcp add --url` — it opens a browser sign-in window right away.
+  ```bash
+  C="${CODEX_HOME:-$HOME/.codex}"; mkdir -p "$C"; touch "$C/config.toml"; if ! (cd / && codex mcp get on-gov >/dev/null 2>&1); then if cp "$C/config.toml" "$C/config.toml.bak-on-gov"; then printf '\n[mcp_servers.on-gov]\nurl = "https://onmunseo.kr/mcp/gov"\n' >> "$C/config.toml"; (cd / && codex mcp get on-gov >/dev/null 2>&1) || { cp "$C/config.toml.bak-on-gov" "$C/config.toml"; echo "자동으로 더하지 못했습니다 — config.toml 에 손으로 더해 주세요"; }; else echo "백업을 만들지 못해 그만둡니다 — config.toml 은 그대로입니다"; fi; fi; (cd / && codex mcp get on-gov)
+  ```
+  On Windows, or where the `codex` command is not installed (IDE extension only), add the two lines `[mcp_servers.on-gov]` and `url = "https://onmunseo.kr/mcp/gov"` to the end of that file by hand (if the file already has a one-line `mcp_servers = { … }` table, add `on-gov = { url = "https://onmunseo.kr/mcp/gov" }` inside it instead).
+- **Cursor** — add one entry to `"mcpServers"` in `~/.cursor/mcp.json` (keep the other servers). For people: [Add to Cursor](https://cursor.com/install-mcp?name=on-gov&config=eyJ1cmwiOiJodHRwczovL29ubXVuc2VvLmtyL21jcC9nb3YifQ%3D%3D).
+  ```json
+  "on-gov": { "url": "https://onmunseo.kr/mcp/gov" }
+  ```
+- **VS Code** — for people: [Add to VS Code](https://insiders.vscode.dev/redirect/mcp/install?name=on-gov&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fonmunseo.kr%2Fmcp%2Fgov%22%7D).
+  ```bash
+  code --add-mcp '{"name":"on-gov","type":"http","url":"https://onmunseo.kr/mcp/gov"}'
+  ```
+- **Claude Desktop · claude.ai** — done by the person in the app: Settings → Connectors → Add custom connector → name `On 공문서 쓰기`, URL `https://onmunseo.kr/mcp/gov` → Connect.
+
+The tools do not attach to the conversation that registered them. When done, tell the user: "Restart the tool or open a new conversation to see the On 공문서 쓰기 tools." If `claude mcp list` (Codex: `codex mcp list`) lists `on-gov`, it is registered. Full steps (Korean): [llms-install.md](llms-install.md)
+
+<!-- ai-install -->
+
 Turns Markdown or a `structure` into a Korean government-style document file — report, plan, result report, press release, internal draft or public notice (`on_write_gov`): HumanMyeongjo (휴먼명조) and HY HeadLine M (HY헤드라인M) fonts, chapter bars, □ ○ - indented levels, table captions and units, and a cover and table of contents for plans and result reports. Unless you name a template, reports and plans follow the style of the national emergency-medical-care master plan (Ministry of Health and Welfare). It also fills 66 example templates, turns text into official tables, data into chart images and bullet lists into diagram images. Everything is rule-based (no AI) and nothing that is not in the draft is added. For tables, charts and diagrams, if a single number would be lost you get the reason instead of a result; `on_write_gov` reads the finished file back and reports the comparison in `check`.
 
 This repository holds only the setup guide and configuration files (there is no web page here — to use a screen, open the [On 문서 web editor](https://onmunseo.kr/app/)). The engine and server code of the service are not public. The service and its tools speak Korean.
