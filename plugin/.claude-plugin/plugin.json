@@ -1,0 +1,22 @@
+{
+  "name": "on-gov",
+  "version": "0.1.0",
+  "description": "On 공문서 쓰기 원격 MCP(https://onmunseo.kr/mcp/gov) 연결 — 원고나 AI 채팅의 글을 정부 공문서 꼴 한글(HWPX) 보고서·계획서·보도자료로 만드는 원격 MCP 서버. 서버 주소 하나만 담은 설정 꾸러미이며 엔진 코드·비밀값은 없습니다. A remote MCP server that turns drafts into Korean government-style HWPX reports, plans, result reports and press releases.",
+  "author": {
+    "name": "On 문서",
+    "url": "https://github.com/on-munseo"
+  },
+  "homepage": "https://github.com/on-munseo/on-gov",
+  "repository": "https://github.com/on-munseo/on-gov",
+  "keywords": [
+    "hwpx",
+    "hwp",
+    "government",
+    "report",
+    "korean",
+    "document-generation",
+    "mcp"
+  ],
+  "license": "MIT",
+  "privacyPolicyUrl": "https://onmunseo.kr/privacy"
+}
