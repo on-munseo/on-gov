@@ -14,7 +14,23 @@ Turns Markdown or a `structure` into a Korean government-style document file —
 
 This repository holds only the setup guide and configuration files (there is no web page here — to use a screen, open the [On 문서 web editor](https://onmunseo.kr/app/)). The engine and server code of the service are not public. The service and its tools speak Korean.
 
-**Jump to:** [Why](#in-short--why-use-it) · [Tools](#what-it-does) · [Connect](#connect) · [Examples](#examples) · [Measured results](#measured-results) · [Guest and key](#guest-and-key) · [Safety](#safety) · [Good to know](#good-to-know)
+## Comparing with other tools
+
+Measured by us on the same documents with the same scorer — not an official ranking. Versions, conditions and definitions are in the [benchmark notes](https://github.com/on-munseo/on-munseo.github.io/blob/main/docs/benchmark.md) (Korean).
+
+| Our 30 government-document tasks opened in Hancom Office Hangul 2024 (same tasks, same scoring, 2026-11-19) | On 공문서 쓰기 | A public HWPX report-generation MCP |
+|---|---|---|
+| Average score (out of 100) | 99.6 | 86.4 |
+| □·○·- paragraphs whose second line starts under the first line's text | 100% | 18.5% |
+| Headings left alone at the bottom of a page | 0 | 4 |
+| Content kept (manuscript elements as written) | 100% | 100% |
+
+- The current release scores 100 on all 30 tasks (2026-11-25). It also leaves fewer paragraphs with a short last line (47 vs. 57, 2026-11-26 — the text is unchanged; spacing, letter spacing and character width are adjusted).
+- With the same 5 manuscripts, HWPX files that an AI coding tool built by writing its own code (no MCP) averaged 57.1 (3 of them showed no body text in Hancom, as made on the first try); On 공문서 쓰기 scored 100 (2026-11-26). Five is a small sample.
+- Charts, diagrams, cover and table of contents come from the same tool; the result can then be checked before approval and its statute citations verified (On 근거). Tables, charts, diagrams and form filling return the reason instead of a result if a single source number would be lost, and `on_write_gov` returns a `check` made by re-reading the file it wrote.
+- **Where documents go:** documents sent to this address are processed only in memory on the On 문서 server (a data centre in Korea) and discarded afterwards; they are not sent to any outside AI company. Send only public documents or your own to this server-side address; handle internal documents of your organisation with the browser-only features of the [web editor](https://onmunseo.kr/app/) (open, edit and save HWP/HWPX, the pre-approval check, masking personal data) — attachment text extraction, OCR and HWPX creation in the web editor still go through the server.
+
+**Jump to:** [Comparing](#comparing-with-other-tools) · [Why](#in-short--why-use-it) · [Tools](#what-it-does) · [Connect](#connect) · [Examples](#examples) · [Measured results](#measured-results) · [Guest and key](#guest-and-key) · [Safety](#safety) · [Good to know](#good-to-know)
 
 ## In short — why use it
 
@@ -96,6 +112,17 @@ To send a key as a header, append `"--header", "Authorization:${ON_AUTH}"` to `"
 3. Enter your key on the On 문서 sign-in page, then turn the connector on from the tools (+) menu of a chat.
 
 - ChatGPT receives a separate pass instead of your key (same permissions and daily quota). Revoking the key blocks the pass at once.
+
+### Codex
+
+Without a key, add two lines to `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.on-gov]
+url = "https://onmunseo.kr/mcp/gov"
+```
+
+- `codex mcp add` opens the On 문서 sign-in window right away. With a key, enter it there; without one, close it (Ctrl-C) and use the two lines above.
 
 ### Cursor
 
@@ -205,7 +232,7 @@ Weak spots: many paragraphs end with a short last line — in 89 of the 153 mult
 |---|---|---|
 | How to connect | Add the URL with no authentication | Enter the key on the On 문서 sign-in page (OAuth), or send `Authorization: Bearer <key>` |
 | Tools at this endpoint | 6 | 6 |
-| Daily quota | 50 calls a day and 6 a minute per internet address (IP), counted across all On 문서 endpoints and the web editor. When the shared guest quota for the day runs out, guest access closes until midnight Korea time | A daily quota and concurrency limit set per key |
+| Daily quota | 50 calls a day and 6 a minute (the statute tools `law_`·`med_` have their own 100 a day and 20 a minute) per internet address (IP), counted across all On 문서 endpoints and the web editor. When the shared guest quota for the day runs out, guest access closes until midnight Korea time | A daily quota and concurrency limit set per key |
 | Size | 6 MB per request (base64 included) | 25 MB per file |
 | Needs a key | — | none (the key must include this bundle — first-issued keys do not) |
 
@@ -219,7 +246,7 @@ Weak spots: many paragraphs end with a short last line — in 89 of the 153 mult
 1. **Nothing is kept.** Documents and text you send are handled in server memory only and discarded when done. No document files are stored; the access log holds only the key alias, tool name, request size, time taken and success (no contents, no file names).
 2. **Rule-based, no AI.** No facts or numbers beyond the draft are added; charts and diagrams use only the numbers and words given.
 3. **Lost numbers are reported.** Tables, charts and diagrams (`on_table`, `on_chart`, `on_diagram`) return the reason instead of a result if any number would be lost; `on_write_gov` reads the file back and returns `check` (`check.same: false` means something was lost — see `check.examples`).
-4. **Send only public material or your own.** Do not paste text from internal documents of your organisation.
+4. **Send only public material or your own to this server-side address.** Handle internal documents of your organisation with the browser-only features of the [web editor](https://onmunseo.kr/app/) (open, edit and save HWP/HWPX, the pre-approval check, masking personal data).
 5. **Safety limits stay on.** Size limits against attacks such as zip bombs, and refusal of distribution-only documents, are never lifted for convenience.
 6. **Result files last 15 minutes.** Files are returned as links that work for 15 minutes.
 
