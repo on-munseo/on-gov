@@ -120,7 +120,7 @@ Of the three paths at the top ([For AI assistants](#for-ai-assistants--installin
 claude mcp add --transport http -s user on-gov https://onmunseo.kr/mcp/gov
 ```
 
-**Claude Code plugin** — adds ① the local edition + ② the statute pair (Node.js 20+; works on Windows too — the small launcher `plugin/run-local.mjs` starts npx). One line (Claude Code 2.1.275 or later):
+**Claude Code plugin** — adds ① the local edition + ② the statute pair (Node.js 20+; works on Windows too — the small launcher `plugin/run-local.mjs` starts npx). Installing several of these product plugins starts the local edition several times and shows the same tools more than once, so install just one. One line (Claude Code 2.1.275 or later):
 
 ```bash
 claude plugin install on-gov --marketplace on-munseo/on-gov
