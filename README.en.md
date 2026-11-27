@@ -10,8 +10,28 @@ A remote MCP server that turns drafts into Korean government-style HWPX reports,
 
 </div>
 
+Turns Markdown or a `structure` into a Korean government-style document file — report, plan, result report, press release, internal draft or public notice (`on_write_gov`): HumanMyeongjo (휴먼명조) and HY HeadLine M (HY헤드라인M) fonts, chapter bars, □ ○ - indented levels, table captions and units, and a cover and table of contents for plans and result reports. Unless you name a template, reports and plans follow the style of the national emergency-medical-care master plan (Ministry of Health and Welfare). It also fills 66 example templates, turns text into official tables, data into chart images and bullet lists into diagram images. Everything is rule-based (no AI) and nothing that is not in the draft is added. For tables, charts and diagrams, if a single number would be lost you get the reason instead of a result; `on_write_gov` reads the finished file back and reports the comparison in `check`.
+
+This repository holds only the setup guide and configuration files (including one small plugin launcher) (there is no web page here — to use a screen, open the [On 문서 web editor](https://onmunseo.kr/app/)). The engine and server code of the service are not public. The service and its tools speak Korean.
+
+- Charts, diagrams, cover and table of contents come from the same tool; the result can then be checked before approval and its statute citations verified (On 근거). Tables, charts, diagrams and form filling return the reason instead of a result if a single source number would be lost, and `on_write_gov` returns a `check` made by re-reading the file it wrote.
+- **Where documents go:** documents sent to this address are processed only in memory on the On 문서 server (a data centre in Korea) and discarded afterwards; they are not sent to any outside AI company. Send only public documents or your own to this server-side address; handle internal documents of your organisation with the browser-only features of the [web editor](https://onmunseo.kr/app/) (open, edit and save HWP/HWPX, the pre-approval check, masking personal data) — attachment text extraction, OCR and HWPX creation in the web editor still go through the server.
+
+**Jump to:** [Why](#in-short--why-use-it) · [Install](#installation-guide-for-people-and-ai-assistants) · [Measured results](#measured-results) · [Tools](#what-it-does) · [Connect](#connect) · [Examples](#examples) · [Guest and key](#guest-and-key) · [Safety](#safety) · [Good to know](#good-to-know) · [Comparisons (reference)](#measurements-and-comparisons-reference)
+
+## In short — why use it
+
+| Common pain | With On 공문서 쓰기 |
+|---|---|
+| An HWP file made by an AI chat opens as a blank page in Hancom | From the same 5 drafts, 3 files made by an AI chat alone showed no text at all in Hancom; files made with this tool: 0 (see results) |
+| You align □ ○ - levels, chapter bars, the cover and the contents by hand | The engine does the layout — second lines align with the first line’s text, and no heading is left alone at the bottom of a page |
+| You make tables, charts and diagrams separately and paste them in | `on_table`, `on_chart` and `on_diagram` draw only from the numbers and words given, and return a reason instead of an image if anything does not match |
+| You are not sure what layout to use | Pick one of 66 example templates (plans, reports, events, notices, press releases) and fill it with your material (`on_list_templates`, `on_fill_template`) |
+
+**When you do not need it:** If your organisation gives you a form file, fill that form instead (`on_fill` in [On HWPX 만들기](https://github.com/on-munseo/on-hwpx)). A plain one-page memo only needs `on_write`.
+
 <!-- ai-install -->
-## For AI assistants — installing this repository
+## Installation guide (for people and AI assistants)
 
 There are three paths; **start with ①**. None needs a key or sign-in. The tools of this repository (On 공문서 쓰기 — government-style HWPX writing) are in ① the local edition (the npm package `on-munseo-local` by the same maker, on-munseo — see the checks below) — when simply asked to install, register ①. `plugin/` (the Claude Code plugin) in this repository adds ① and ②, and `server.json` (for the official MCP registry) lists ③, the server edition of this bundle.
 
@@ -64,38 +84,16 @@ The tools do not attach to the conversation that registered them. When done, tel
 
 <!-- ai-install -->
 
-Turns Markdown or a `structure` into a Korean government-style document file — report, plan, result report, press release, internal draft or public notice (`on_write_gov`): HumanMyeongjo (휴먼명조) and HY HeadLine M (HY헤드라인M) fonts, chapter bars, □ ○ - indented levels, table captions and units, and a cover and table of contents for plans and result reports. Unless you name a template, reports and plans follow the style of the national emergency-medical-care master plan (Ministry of Health and Welfare). It also fills 66 example templates, turns text into official tables, data into chart images and bullet lists into diagram images. Everything is rule-based (no AI) and nothing that is not in the draft is added. For tables, charts and diagrams, if a single number would be lost you get the reason instead of a result; `on_write_gov` reads the finished file back and reports the comparison in `check`.
+## Measured results
 
-This repository holds only the setup guide and configuration files (including one small plugin launcher) (there is no web page here — to use a screen, open the [On 문서 web editor](https://onmunseo.kr/app/)). The engine and server code of the service are not public. The service and its tools speak Korean.
+| What | Test set | Result | Build · date · machine |
+|---|---|---|---|
+| Opened in Hancom Office Hangul 2024 | 30 self-made official-document tasks (12 reports · 6 plans · 6 result reports · 6 press releases; agencies and numbers are made up) | all 30 opened · all 30 scored 100 (layout 40 · line and page drift 20 · content kept 40) · second-line alignment 153/153 · paragraphs with only 1–2 characters on the last line 0/153 | On 한글엔진 2.2.1 and 공문서 쓰기 as deployed at the time · Hangul 2024 (9.1.1) · Windows i7-14700 · 2026-11-25 |
+| This tool vs AI chat alone | The same 5 drafts made both ways and opened in Hangul 2024 | draft elements (titles, paragraphs, table cells) shown as written 169/169 (100%) vs 60/169 (35.5%) · documents showing no text at all 0/5 vs 3/5 · score with the same rubric 100 vs 57.1 | 2026-11-26 (the AI-chat files are the ones made on 2026-11-22) |
 
-## Comparing with other tools
+<sub>All values were measured by us, with engine 2.2.1; since 2026-11-26 the live engine is 2.2.3 (not re-measured yet). The 30 tasks are our own. Five drafts is a small sample, and “AI chat alone” means a general AI coding tool without MCP, asked once with the same request, result kept as is (no picking, no retries). That result can vary with the AI and the moment, and may improve if a person checks it in Hancom and asks again. The rubric is in the [measurement notes](https://github.com/on-munseo/on-munseo.github.io/blob/main/docs/benchmark.md#4-만들기--한컴-한글-2024-로-연-공문서-30과제) (Korean).</sub>
 
-Measured by us on the same documents with the same scorer — not an official ranking. Versions, conditions and definitions are in the [benchmark notes](https://github.com/on-munseo/on-munseo.github.io/blob/main/docs/benchmark.md) (Korean).
-
-| Our 30 government-document tasks opened in Hancom Office Hangul 2024 (same tasks, same scoring, 2026-11-19) | On 공문서 쓰기 | A public HWPX report-generation MCP |
-|---|---|---|
-| Average score (out of 100) | 99.6 | 86.4 |
-| □·○·- paragraphs whose second line starts under the first line's text | 100% | 18.5% |
-| Headings left alone at the bottom of a page | 0 | 4 |
-| Content kept (manuscript elements as written) | 100% | 100% |
-
-- The current release scores 100 on all 30 tasks (2026-11-25). It also leaves fewer paragraphs with a short last line (47 vs. 57, 2026-11-26 — the text is unchanged; spacing, letter spacing and character width are adjusted).
-- With the same 5 manuscripts, HWPX files that an AI coding tool built by writing its own code (no MCP) averaged 57.1 (3 of them showed no body text in Hancom, as made on the first try); On 공문서 쓰기 scored 100 (2026-11-26). Five is a small sample.
-- Charts, diagrams, cover and table of contents come from the same tool; the result can then be checked before approval and its statute citations verified (On 근거). Tables, charts, diagrams and form filling return the reason instead of a result if a single source number would be lost, and `on_write_gov` returns a `check` made by re-reading the file it wrote.
-- **Where documents go:** documents sent to this address are processed only in memory on the On 문서 server (a data centre in Korea) and discarded afterwards; they are not sent to any outside AI company. Send only public documents or your own to this server-side address; handle internal documents of your organisation with the browser-only features of the [web editor](https://onmunseo.kr/app/) (open, edit and save HWP/HWPX, the pre-approval check, masking personal data) — attachment text extraction, OCR and HWPX creation in the web editor still go through the server.
-
-**Jump to:** [Comparing](#comparing-with-other-tools) · [Why](#in-short--why-use-it) · [Tools](#what-it-does) · [Connect](#connect) · [Examples](#examples) · [Measured results](#measured-results) · [Guest and key](#guest-and-key) · [Safety](#safety) · [Good to know](#good-to-know)
-
-## In short — why use it
-
-| Common pain | With On 공문서 쓰기 |
-|---|---|
-| An HWP file made by an AI chat opens as a blank page in Hancom | From the same 5 drafts, 3 files made by an AI chat alone showed no text at all in Hancom; files made with this tool: 0 (see results) |
-| You align □ ○ - levels, chapter bars, the cover and the contents by hand | The engine does the layout — second lines align with the first line’s text, and no heading is left alone at the bottom of a page |
-| You make tables, charts and diagrams separately and paste them in | `on_table`, `on_chart` and `on_diagram` draw only from the numbers and words given, and return a reason instead of an image if anything does not match |
-| You are not sure what layout to use | Pick one of 66 example templates (plans, reports, events, notices, press releases) and fill it with your material (`on_list_templates`, `on_fill_template`) |
-
-**When you do not need it:** If your organisation gives you a form file, fill that form instead (`on_fill` in [On HWPX 만들기](https://github.com/on-munseo/on-hwpx)). A plain one-page memo only needs `on_write`.
+Weak spots: many paragraphs end with a short last line — in 89 of the 153 multi-line □·○·- paragraphs of the 30 tasks the last line is under a third of the line width (none with only 1–2 characters). Reducing it further needs rewording.
 
 ## What it does
 
@@ -113,7 +111,7 @@ Measured by us on the same documents with the same scorer — not an official ra
 
 ## Connect
 
-Of the three paths at the top ([For AI assistants](#for-ai-assistants--installing-this-repository): ① local edition · ② pair address · ③ server edition), this section details ③, the server edition of this bundle, for each tool.
+Of the three paths in the [installation guide](#installation-guide-for-people-and-ai-assistants) above (① local edition · ② pair address · ③ server edition), this section details ③, the server edition of this bundle, for each tool.
 
 **Claude Code** — one line in the terminal (`-s user` makes it available in every folder):
 
@@ -271,17 +269,6 @@ The reply had a 3-page result report, `check.same: true`, a 15-minute link in `f
 
 The AI decides which tool to call; these are typical cases.
 
-## Measured results
-
-| What | Test set | Result | Build · date · machine |
-|---|---|---|---|
-| Opened in Hancom Office Hangul 2024 | 30 self-made official-document tasks (12 reports · 6 plans · 6 result reports · 6 press releases; agencies and numbers are made up) | all 30 opened · all 30 scored 100 (layout 40 · line and page drift 20 · content kept 40) · second-line alignment 153/153 · paragraphs with only 1–2 characters on the last line 0/153 | On 한글엔진 2.2.1 and 공문서 쓰기 as deployed at the time · Hangul 2024 (9.1.1) · Windows i7-14700 · 2026-11-25 |
-| This tool vs AI chat alone | The same 5 drafts made both ways and opened in Hangul 2024 | draft elements (titles, paragraphs, table cells) shown as written 169/169 (100%) vs 60/169 (35.5%) · documents showing no text at all 0/5 vs 3/5 · score with the same rubric 100 vs 57.1 | 2026-11-26 (the AI-chat files are the ones made on 2026-11-22) |
-
-<sub>All values were measured by us, with engine 2.2.1; since 2026-11-26 the live engine is 2.2.3 (not re-measured yet). The 30 tasks are our own. Five drafts is a small sample, and “AI chat alone” means a general AI coding tool without MCP, asked once with the same request, result kept as is (no picking, no retries). That result can vary with the AI and the moment, and may improve if a person checks it in Hancom and asks again. The rubric is in the [measurement notes](https://github.com/on-munseo/on-munseo.github.io/blob/main/docs/benchmark.md#4-만들기--한컴-한글-2024-로-연-공문서-30과제) (Korean).</sub>
-
-Weak spots: many paragraphs end with a short last line — in 89 of the 153 multi-line □·○·- paragraphs of the 30 tasks the last line is under a third of the line width (none with only 1–2 characters). Reducing it further needs rewording.
-
 ## Guest and key
 
 |  | Guest (no key) | Key |
@@ -349,6 +336,20 @@ Report security problems as described in [SECURITY.md](SECURITY.md).
 | On 글 다듬기 | [on-tidy](https://github.com/on-munseo/on-tidy) | `/mcp/tidy` |
 | On 근거 | [on-geungeo](https://github.com/on-munseo/on-geungeo) | `/mcp/law` |
 | On폭 글꼴 (fonts) | [napurrin/onpok-fonts](https://github.com/napurrin/onpok-fonts) — free fonts (SIL OFL 1.1) · not needed for the MCP install (optional) | — |
+
+## Measurements and comparisons (reference)
+
+Measured by us on the same documents with the same scorer — not an official ranking. Versions, conditions and definitions are in the [benchmark notes](https://github.com/on-munseo/on-munseo.github.io/blob/main/docs/benchmark.md) (Korean). Values for this bundle alone are in [Measured results](#measured-results) above.
+
+| Our 30 government-document tasks opened in Hancom Office Hangul 2024 (same tasks, same scoring, 2026-11-19) | On 공문서 쓰기 | A public HWPX report-generation MCP |
+|---|---|---|
+| Average score (out of 100) | 99.6 | 86.4 |
+| □·○·- paragraphs whose second line starts under the first line's text | 100% | 18.5% |
+| Headings left alone at the bottom of a page | 0 | 4 |
+| Content kept (manuscript elements as written) | 100% | 100% |
+
+- The current release scores 100 on all 30 tasks (2026-11-25). It also leaves fewer paragraphs with a short last line (47 vs. 57, 2026-11-26 — the text is unchanged; spacing, letter spacing and character width are adjusted).
+- With the same 5 manuscripts, HWPX files that an AI coding tool built by writing its own code (no MCP) averaged 57.1 (3 of them showed no body text in Hancom, as made on the first try); On 공문서 쓰기 scored 100 (2026-11-26). Five is a small sample.
 
 ## License
 
