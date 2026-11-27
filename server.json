@@ -5,6 +5,10 @@
   "description": "Write Korean government-style HWPX reports, plans and press releases from drafts",
   "version": "1.0.0",
   "websiteUrl": "https://github.com/on-munseo/on-gov",
+  "repository": {
+    "url": "https://github.com/on-munseo/on-gov",
+    "source": "github"
+  },
   "remotes": [
     {
       "type": "streamable-http",

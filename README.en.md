@@ -13,7 +13,7 @@ A remote MCP server that turns drafts into Korean government-style HWPX reports,
 <!-- ai-install -->
 ## For AI assistants — installing this repository
 
-There are three paths; **start with ①**. None needs a key or sign-in. The tools of this repository (On 공문서 쓰기 — government-style HWPX writing) are in ① the local edition (the npm package `on-munseo-local` by the same maker, on-munseo — see the checks below) — when simply asked to install, register ①. `plugin/` and `server.json` in this repository are the settings for ③, the server edition of this bundle.
+There are three paths; **start with ①**. None needs a key or sign-in. The tools of this repository (On 공문서 쓰기 — government-style HWPX writing) are in ① the local edition (the npm package `on-munseo-local` by the same maker, on-munseo — see the checks below) — when simply asked to install, register ①. `plugin/` (the Claude Code plugin) in this repository adds ① and ②, and `server.json` (for the official MCP registry) lists ③, the server edition of this bundle.
 
 **① Local edition — documents never leave this computer (first).** Extracts text, masks personal data and runs pre-approval checks, and writes government-style HWPX, makes HWPX files and tidies text, on this computer. The program does not use the internet (check with `on_local_info` after installing — npx asking the npm registry for a newer version at start-up is npx itself; to avoid even that, `npm install -g on-munseo-local` and register the command `on-munseo-local`). Needs Node.js 20+.
 - **Only the AI tool in use** (what an assistant should run — other tools' settings are left alone)
@@ -65,7 +65,7 @@ The tools do not attach to the conversation that registered them. When done, tel
 
 Turns Markdown or a `structure` into a Korean government-style document file — report, plan, result report, press release, internal draft or public notice (`on_write_gov`): HumanMyeongjo (휴먼명조) and HY HeadLine M (HY헤드라인M) fonts, chapter bars, □ ○ - indented levels, table captions and units, and a cover and table of contents for plans and result reports. Unless you name a template, reports and plans follow the style of the national emergency-medical-care master plan (Ministry of Health and Welfare). It also fills 66 example templates, turns text into official tables, data into chart images and bullet lists into diagram images. Everything is rule-based (no AI) and nothing that is not in the draft is added. For tables, charts and diagrams, if a single number would be lost you get the reason instead of a result; `on_write_gov` reads the finished file back and reports the comparison in `check`.
 
-This repository holds only the setup guide and configuration files (there is no web page here — to use a screen, open the [On 문서 web editor](https://onmunseo.kr/app/)). The engine and server code of the service are not public. The service and its tools speak Korean.
+This repository holds only the setup guide and configuration files (including one small plugin launcher) (there is no web page here — to use a screen, open the [On 문서 web editor](https://onmunseo.kr/app/)). The engine and server code of the service are not public. The service and its tools speak Korean.
 
 ## Comparing with other tools
 
@@ -120,7 +120,7 @@ Of the three paths at the top ([For AI assistants](#for-ai-assistants--installin
 claude mcp add --transport http -s user on-gov https://onmunseo.kr/mcp/gov
 ```
 
-**Claude Code plugin** — one line (Claude Code 2.1.275 or later):
+**Claude Code plugin** — adds ① the local edition + ② the statute pair (Node.js 20+; works on Windows too — the small launcher `plugin/run-local.mjs` starts npx). One line (Claude Code 2.1.275 or later):
 
 ```bash
 claude plugin install on-gov --marketplace on-munseo/on-gov

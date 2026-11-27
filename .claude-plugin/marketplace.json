@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "on-gov",
-  "description": "On 공문서 쓰기 — 원고나 AI 채팅의 글을 정부 공문서 꼴 한글(HWPX) 보고서·계획서·보도자료로 만드는 원격 MCP 서버 연결 꾸러미",
+  "description": "On 공문서 쓰기 — 내 PC 판(npm on-munseo-local) + 법령 짝(On 근거) 을 붙이는 Claude Code 플러그인 꾸러미",
   "owner": {
     "name": "On 문서",
     "url": "https://github.com/on-munseo"
@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "on-gov",
-      "description": "On 공문서 쓰기 원격 MCP(https://onmunseo.kr/mcp/gov) 연결 — 원고나 AI 채팅의 글을 정부 공문서 꼴 한글(HWPX) 보고서·계획서·보도자료로 만드는 원격 MCP 서버",
+      "description": "On 공문서 쓰기(공문서 꼴 한글(HWPX) 보고서·계획서·보도자료 쓰기) — 내 PC 판(npm on-munseo-local, 문서가 이 컴퓨터 밖으로 안 감) + 법령 짝(https://onmunseo.kr/mcp/law), Node.js 20 이상",
       "author": {
         "name": "On 문서"
       },

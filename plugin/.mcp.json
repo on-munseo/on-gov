@@ -1,8 +1,14 @@
 {
   "mcpServers": {
-    "on-gov": {
+    "on-local": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/run-local.mjs"
+      ]
+    },
+    "on-geungeo": {
       "type": "http",
-      "url": "https://onmunseo.kr/mcp/gov"
+      "url": "https://onmunseo.kr/mcp/law"
     }
   }
 }
