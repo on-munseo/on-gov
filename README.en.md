@@ -91,7 +91,7 @@ The tools do not attach to the conversation that registered them. When done, tel
 | Opened in Hancom Office Hangul 2024 | 30 self-made official-document tasks (12 reports · 6 plans · 6 result reports · 6 press releases; agencies and numbers are made up) | all 30 opened · all 30 scored 100 (layout 40 · line and page drift 20 · content kept 40) · second-line alignment 153/153 · paragraphs with only 1–2 characters on the last line 0/153 | On 한글엔진 2.2.1 and 공문서 쓰기 as deployed at the time · Hangul 2024 (9.1.1) · Windows i7-14700 · 2026-11-25 |
 | This tool vs AI chat alone | The same 5 drafts made both ways and opened in Hangul 2024 | draft elements (titles, paragraphs, table cells) shown as written 169/169 (100%) vs 60/169 (35.5%) · documents showing no text at all 0/5 vs 3/5 · score with the same rubric 100 vs 57.1 | 2026-11-26 (the AI-chat files are the ones made on 2026-11-22) |
 
-<sub>All values were measured by us, with engine 2.2.1; since 2026-11-26 the live engine is 2.2.3 (not re-measured yet). The 30 tasks are our own. Five drafts is a small sample, and “AI chat alone” means a general AI coding tool without MCP, asked once with the same request, result kept as is (no picking, no retries). That result can vary with the AI and the moment, and may improve if a person checks it in Hancom and asks again. The rubric is in the [measurement notes](https://github.com/on-munseo/on-munseo.github.io/blob/main/docs/benchmark.md#4-만들기--한컴-한글-2024-로-연-공문서-30과제) (Korean).</sub>
+<sub>All values were measured by us, with engine 2.2.1; as of 2026-11-28, the trial and local editions use engine 2.2.4 (five page-break fixes added; the official-document tasks above have not been re-measured). The 30 tasks are our own. Five drafts is a small sample, and “AI chat alone” means a general AI coding tool without MCP, asked once with the same request, result kept as is (no picking, no retries). That result can vary with the AI and the moment, and may improve if a person checks it in Hancom and asks again. The rubric is in the [measurement notes](https://github.com/on-munseo/on-munseo.github.io/blob/main/docs/benchmark.md#4-만들기--한컴-한글-2024-로-연-공문서-30과제) (Korean).</sub>
 
 Weak spots: many paragraphs end with a short last line — in 89 of the 153 multi-line □·○·- paragraphs of the 30 tasks the last line is under a third of the line width (none with only 1–2 characters). Reducing it further needs rewording.
 
@@ -348,7 +348,7 @@ Measured by us on the same documents with the same scorer — not an official ra
 | Headings left alone at the bottom of a page | 0 | 4 |
 | Content kept (manuscript elements as written) | 100% | 100% |
 
-- The current release scores 100 on all 30 tasks (2026-11-25). It also leaves fewer paragraphs with a short last line (47 vs. 57, 2026-11-26 — the text is unchanged; spacing, letter spacing and character width are adjusted).
+- The trial build measured on 2026-11-25 scored 100 on all 30 tasks. It also left fewer paragraphs with a short last line (47 vs. 57, 2026-11-26 — the text is unchanged; spacing, letter spacing and character width are adjusted).
 - With the same 5 manuscripts, HWPX files that an AI coding tool built by writing its own code (no MCP) averaged 57.1 (3 of them showed no body text in Hancom, as made on the first try); On 공문서 쓰기 scored 100 (2026-11-26). Five is a small sample.
 
 ## License
